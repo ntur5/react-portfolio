@@ -1,72 +1,181 @@
-import React, { Component } from "react"
+import React, { Component } from "react";
+import axios from "axios";
 
-import PortfolioItem from "./portfolio-item"
+import PortfolioItem from "./portfolio-item";
 
 export default class PortfolioContainer extends Component {
-    // State
-    // Lifecycle hooks
-    constructor() {
-        super();
+  constructor() {
+    super();
 
-        this.state = {
-            pageTitle: "Welcome to my portfolio",
-            isLoading: false,
-            data: [
-                {title: "Quip", category: "eCommerce"}, 
-                {title: "Eventbrite", category: "Scheduling"}, 
-                {title: "Ministry Safe", category: "Enterprise"}, 
-                {title: "Swing Away", category: "eCommerce"}
-            ]
-        };
+    this.state = {
+      pageTitle: "Welcome to my portfolio",
+      isLoading: false,
+      data: []
+    };
 
-        this.handleFilter = this.handleFilter.bind(this);
-    }
+    this.handleFilter = this.handleFilter.bind(this);
+  }
 
-    handleFilter(filter) {
-            this.setState({
-                data: this.state.data.filter(item => {
-                    return item.category === filter;
-                })
-            })
-    }
+  handleFilter(filter) {
+    this.setState({
+      data: this.state.data.filter(item => {
+        return item.category === filter;
+      })
+    });
+  }
 
-    portfolioItems() {
-        return this.state.data.map(item => {
-            return <PortfolioItem title={item.title} url={"google.com"} />;
-        })
-    }
-
-    handlePageTitleUpdate() {
+  getPortfolioItems() {
+    axios
+      .get("https://nathanstorrrs.devcamp.space/portfolio/portfolio_items")
+      .then(response => {
         this.setState({
-            pageTitle: "Something else"
+          data: response.data.portfolio_items
         });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  portfolioItems() {
+    // data that we'll need:
+    // - background image: thumb_image_url
+    // - log 
+    // - description: description
+    // - id: id
+    
+    
+    return this.state.data.map(item => {
+      return (
+        <PortfolioItem
+          key={item.id}
+          item={item}
+        />
+      );
+    });
+  }
+
+  componentDidMount() {
+    this.getPortfolioItems();
+  }
+
+  render() {
+    if (this.state.isLoading) {
+      return <div>Loading...</div>;
     }
 
-    // handlePageTitleUpdate = () => {
-    //     return "yay"
-    // }
+    return (
+      <div>
+        <h2>{this.state.pageTitle}</h2>
 
-    render() {
-        if (this.state.isLoading) {
-            return <div>Loading...</div>
-        }
+        <button onClick={() => this.handleFilter("eCommerce")}>
+          eCommerce
+        </button>
+        <button onClick={() => this.handleFilter("Scheduling")}>
+          Scheduling
+        </button>
+        <button onClick={() => this.handleFilter("Enterprise")}>
+          Enterprise
+        </button>
 
-        return (
-            <div>
-                <h2>{this.state.pageTitle}</h2>
-
-
-                <button onClick={() => this.handleFilter('eCommerce')}>eCommerce</button>
-                <button onClick={() => this.handleFilter('Scheduling')}>Scheduling</button>
-                <button onClick={() => this.handleFilter('Enterprise')}>Enterprise</button>
-
-                {this.portfolioItems()}
-
-
-
-                <hr/>
-                <button onClick={this.handlePageTitleUpdate}>Change Title</button>
-            </div>
-        )
-    }
+        {this.portfolioItems()}
+      </div>
+    );
+  }
 }
+
+
+
+// import React, { Component } from "react"
+// import axios from "axios"
+
+// import PortfolioItem from "./portfolio-item"
+
+// export default class PortfolioContainer extends Component {
+//     // State
+//     // Lifecycle hooks
+//     constructor() {
+//         super();
+
+//         this.state = {
+//             pageTitle: "Welcome to my portfolio",
+//             isLoading: false,
+//             data: [
+//                 {title: "Quip", category: "eCommerce", slug: "quip"}, 
+//                 {title: "Eventbrite", category: "Scheduling", slug: "eventbrite"}, 
+//                 {title: "Ministry Safe", category: "Enterprise", slug: "ministry-safe"}, 
+//                 {title: "Swing Away", category: "eCommerce", slug: "swingaway"}
+//             ]
+//         };
+
+//         this.handleFilter = this.handleFilter.bind(this);
+//         this.getPortfolioItems = this.getPortfolioItems.bind(this)
+
+//     }
+
+//     handleFilter(filter) {
+//             this.setState({
+//                 data: this.state.data.filter(item => {
+//                     return item.category === filter;
+//                 })
+//             })
+//     }
+
+//     getPortfolioItems() {
+//         axios.get('https://nathanstorrrs.devcamp.space/portfolio/portfolio_items')
+//           .then(response => {
+//             this.setState({
+//                 data: response.data.portfolio_items
+//             })
+//           })
+//           .catch(error => {
+//             // handle error
+//             console.log(error);
+//           })
+//       }
+
+//     portfolioItems() {
+//         return this.state.data.map(item => {
+//             // console.log("item data ", item)
+//             return <PortfolioItem key={item.id} title={item.name} url={item.url} slug={item.id} />;
+//         })
+//     }
+
+//     handlePageTitleUpdate() {
+//         this.setState({
+//             pageTitle: "Something else"
+//         });
+//     }
+
+//     // handlePageTitleUpdate = () => {
+//     //     return "yay"
+//     // }
+
+//     componentDidMount() {
+//         this.getPortfolioItems()
+//     }
+
+//     render() {
+//         if (this.state.isLoading) {
+//             return <div>Loading...</div>
+//         }
+        
+//         return (
+//             <div>
+//                 <h2>{this.state.pageTitle}</h2>
+
+
+//                 <button onClick={() => this.handleFilter('eCommerce')}>eCommerce</button>
+//                 <button onClick={() => this.handleFilter('Scheduling')}>Scheduling</button>
+//                 <button onClick={() => this.handleFilter('Enterprise')}>Enterprise</button>
+
+//                 {this.portfolioItems()}
+
+
+
+//                 <hr/>
+//                 <button onClick={this.handlePageTitleUpdate}>Change Title</button>
+//             </div>
+//         )
+//     }
+// }
