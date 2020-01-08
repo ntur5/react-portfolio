@@ -18,22 +18,18 @@ import portfolioDetail from './portfolio/portfolio-detail';
 import NoMatch from "./pages/no-match"
 
 export default class App extends Component {
-  
-  
 
   render() {
-    
 
     return (
       <div className='app'>
-        
+        <h1>NaTe STorRs's &nbsp; Portfolio</h1>
         <Router>
           <div>
           <div>
           {moment().format('MMMM Do YYYY, h:mm:ss a')}
         </div>
             <NavigationContainer />
-
             <Switch>
               <Route exact path="/" component={Home} /> 
               <Route path="/about-me" component={About} /> 
@@ -44,8 +40,6 @@ export default class App extends Component {
             </Switch>
           </div>
         </Router>
-        
-        <h1>NaTe STorRs's &nbsp; Portfolio</h1>
         
       </div>
     );
