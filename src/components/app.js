@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import moment from "moment";
 import axios from 'axios'
 import { 
   BrowserRouter as Router,
   Switch,
   Route
-   } from 'react-router-dom'
+} from 'react-router-dom'
 
 import PortfolioContainer from "./portfolio/portfolio-container"
 import NavigationContainer from "./navigation/navigation-container"
@@ -22,13 +21,9 @@ export default class App extends Component {
   render() {
 
     return (
-      <div className='app'>
-        <h1>NaTe STorRs's &nbsp; Portfolio</h1>
+      <div className='container'>
         <Router>
           <div>
-          <div>
-          {moment().format('MMMM Do YYYY, h:mm:ss a')}
-        </div>
             <NavigationContainer />
             <Switch>
               <Route exact path="/" component={Home} /> 
@@ -45,3 +40,15 @@ export default class App extends Component {
     );
   }
 }
+
+// import React, { Component } from 'react';
+
+// export default class  extends Component {
+//   render() {
+//     return (
+//       <div>
+        
+//       </div>
+//     )
+//   }
+// }
