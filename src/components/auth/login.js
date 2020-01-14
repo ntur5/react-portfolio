@@ -14,6 +14,18 @@ export default class Login extends Component {
         this.handleSubmit = this.handleSubmit.bind(this)
     }
 
+    buildForm() {
+        let formData = new FormData();
+        
+        formData.append(portfolio_item[name], this.state.name)
+        formData.append(portfolio_item[description], this.state.description)
+        formData.append(portfolio_item[url], this.state.url)
+        formData.append(portfolio_item[category], this.state.category)
+        formData.append(portfolio_item[position], this.state.position)
+
+        return formData
+    }
+
     handleSubmit(event) {
         axios.post('https://api.devcamp.space/sessions', 
         {
@@ -39,6 +51,7 @@ export default class Login extends Component {
                 errorText: "an error occured"
             })
         })
+        
         
         event.preventDefault()
     }
