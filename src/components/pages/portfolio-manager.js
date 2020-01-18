@@ -9,18 +9,55 @@ export default class PortfolioManager extends Component {
     super();
 
     this.state = {
-      portfolioItems: []
+      portfolioItems: [],
+      portfolioToEdit: {}
     };
 
-    this.handleSuccessfulFormSubmission = this.handleSuccessfulFormSubmission.bind(
-      this
-    );
+    this.handleNewFormSubmission = this.handleNewFormSubmission.bind(this);
+    this.handleEditFormSubmission = this.handleEditFormSubmission.bind(this);
     this.handleFormSubmissionError = this.handleFormSubmissionError.bind(this);
+    this.handleDeleteClick = this.handleDeleteClick.bind(this);
+    this.handleEditClick = this.handleEditClick.bind(this);
+    this.clearPortfolioToEdit = this.clearPortfolioToEdit.bind(this);
   }
 
-  handleSuccessfulFormSubmission(portfolioItem) {
+  clearPortfolioToEdit() {
+    this.setState({
+      portfolioToEdit: {}
+    })
+  }
+
+  handleEditClick(portfolioItem) {
+    this.setState({
+      portfolioToEdit: portfolioItem
+    })
+  }
+
+  handleDeleteClick(portfolioItem) {
+    axios
+      .delete(`https://nathanstorrrs.devcamp.space/portfolio/portfolio_items/${portfolioItem.id}`, 
+        {withCredentials: true}
+      ).then(response => {
+        this.setState({
+          portfolioItems: this.state.portfolioItems.filter(item => {
+            return item.id !== portfolioItem.id;
+          })
+        })
+        return response.data;
+      }).catch(error => {
+        console.log('handleDeleteClick error', error)
+      })
+
+  }
+
+  handleEditFormSubmission() {
+    this.getPortfolioItems();
+  }
+
+  handleNewFormSubmission(portfolioItem) {
       this.setState({
-          portfolioItems: [portfolioItem].concat(this.state.portfolioItems)
+          portfolioItems: [portfolioItem, ...this.state.portfolioItems]
+          // portfolioItems: [portfolioItem].concat(this.state.portfolioItems)
       })
   }
 
@@ -31,10 +68,9 @@ export default class PortfolioManager extends Component {
   getPortfolioItems() {
     axios
       .get("https://nathanstorrrs.devcamp.space/portfolio/portfolio_items", {
-        withCredentials: true
-      })
+        withCredentials: true}
+      )
       .then(response => {
-        // console.log([...response.data.portfolio_items][0])
         this.setState({
           portfolioItems: [...response.data.portfolio_items]
         });
@@ -53,13 +89,21 @@ export default class PortfolioManager extends Component {
       <div className="portfolio-manager-wrapper">
         <div className="left-column">
           <PortfolioForm
-            handleSuccessfulFormSubmission={this.handleSuccessfulFormSubmission}
+            handleNewFormSubmission={this.handleNewFormSubmission}
+            handleEditFormSubmission={this.handleEditFormSubmission}
+            handleEditFormSubmission={this.handleEditFormSubmission}
             handleFormSubmissionError={this.handleFormSubmissionError}
+            clearPortfolioToEdit={this.clearPortfolioToEdit}
+            portfolioToEdit={this.state.portfolioToEdit}
           />
         </div>
 
         <div className="right-column">
-          <PortfolioSidebarList data={this.state.portfolioItems} />
+          <PortfolioSidebarList 
+            handleDeleteClick={this.handleDeleteClick}
+            data={this.state.portfolioItems} 
+            handleEditClick={this.handleEditClick}
+          />
         </div>
       </div>
     );
