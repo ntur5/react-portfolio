@@ -53,7 +53,7 @@ class Blog extends Component {
             window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight
         ) {
             this.getBlogItems()
-            console.log("get more posts") 
+            // console.log("get more posts") 
         }
     }
 
@@ -68,7 +68,7 @@ class Blog extends Component {
         .then(response => {
             
             // debugger
-            console.log("getting response", response)
+            // console.log("getting response", response)
             this.setState({
                 blogItems: this.state.blogItems.concat(response.data.portfolio_blogs),
                 totalCount: response.data.meta.total_records,

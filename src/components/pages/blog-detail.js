@@ -15,7 +15,7 @@ export default class BlogDetail extends Component {
     getBlogItem() {
         axios.get(`https://nathanstorrrs.devcamp.space/portfolio/portfolio_blogs/${this.state.currentId}`
         ).then(response => {
-            console.log("response", response)
+            // console.log("response", response)
             this.setState({
                 blogItem: response.data.portfolio_blog
             })
@@ -30,7 +30,7 @@ export default class BlogDetail extends Component {
     }
 
     render() {
-        console.log("currentId", this.state.currentId)
+        // console.log("currentId", this.state.currentId)
         const {
             title,
             content,
