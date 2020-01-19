@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 
+import RichTextEditor from "../forms/rich-text-editor"
+
 export default class BlogForm extends Component {
   constructor(props) {
     super(props);
@@ -31,7 +33,12 @@ export default class BlogForm extends Component {
         { withCredentials: true }
       )
       .then(response => {
-        this.props.handleSuccessfullFormSubmission(response.data);
+        this.props.handleSuccessfulFormSubmission(response.data.portfolio_blog);
+
+        this.setState({
+          title: "",
+          blog_status: ""
+        })
       })
       .catch(error => {
         console.log("handleSubmit for blog error", error);
@@ -48,24 +55,29 @@ export default class BlogForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          onChange={this.handleChange}
-          name="title"
-          placeholder="Blog Title"
-          value={this.state.title}
-        />
+      <form onSubmit={this.handleSubmit} className="blog-form-wrapper">
+        <div className="two-column">
+          <input
+            type="text"
+            onChange={this.handleChange}
+            name="title"
+            placeholder="Blog Title"
+            value={this.state.title}
+          />
 
-        <input
-          type="text"
-          onChange={this.handleChange}
-          name="blog_status"
-          placeholder="Blog status"
-          value={this.state.blog_status}
-        />
+          <input
+            type="text"
+            onChange={this.handleChange}
+            name="blog_status"
+            placeholder="Blog status"
+            value={this.state.blog_status}
+          />
 
-        <button>Save</button>
+        </div>
+        <div className="one-column">
+          <RichTextEditor />
+        </div>
+        <button className="btn">Save</button>
       </form>
     );
   }
