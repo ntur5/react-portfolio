@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import DropZoneComponent from "react-dropzone-component"
 
 import RichTextEditor from "../forms/rich-text-editor"
 
@@ -10,12 +11,38 @@ export default class BlogForm extends Component {
     this.state = {
       title: "",
       blog_status: "",
-      content: ""
+      content: "",
+      featured_image: ""
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRichTextEditorChange = this.handleRichTextEditorChange.bind(this)
+    
+    this.componentConfig = this.componentConfig.bind(this)
+    this.djsConfig = this.djsConfig.bind(this)
+    this.handleFeaturedImageDrop = this.handleFeaturedImageDrop.bind(this)
+  }
+
+  componentConfig() {
+    return {
+      iconFiletypes: [".jpg", ".png"],
+      showFiletypeIcon: true,
+      postUrl: "https://httpbin.org/post"
+    }
+  }
+
+  djsConfig() {
+    return {
+      addRemoveLinks: true,
+      maxFiles: 1
+    }
+  }
+
+  handleFeaturedImageDrop() {
+    return {
+      addedFile: file => this.setState({ featured_image: file })
+    }
   }
 
   handleRichTextEditorChange(content) {
@@ -87,6 +114,15 @@ export default class BlogForm extends Component {
           <RichTextEditor handleRichTextEditorChange={this.handleRichTextEditorChange}/>
         </div>
 
+        <div className="image-uploaders">
+          <DropZoneComponent 
+            config={this.componentConfig()} 
+            djsConfig={this.djsConfig()}
+            eventHandlers={this.handleFeaturedImageDrop()}
+          >
+            <div className="dz-message">Featured Image</div>
+          </DropZoneComponent>
+        </div>
         <button className="btn">Save</button>
       </form>
     );

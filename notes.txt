@@ -1,0 +1,1 @@
+configured blog form with dropzone to handle uploading images 
