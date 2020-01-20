@@ -28,6 +28,16 @@ export default class BlogForm extends Component {
     this.featuredImageRef = React.createRef();
   }
 
+  componentWillMount() {
+    if (this.props.editMode) {
+      this.setState({
+        id: this.props.blog.id,
+        title: this.props.blog.title,
+        status: this.props.blog.status
+      })
+    }
+  }
+
   componentConfig() {
     return {
       iconFiletypes: [".jpg", ".png"],
@@ -83,6 +93,7 @@ export default class BlogForm extends Component {
         }
 
         this.setState({
+          id: "",
           title: "",
           blog_status: "",
           content: "",
