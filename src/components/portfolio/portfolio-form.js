@@ -219,8 +219,8 @@ export default class PortfolioForm extends Component {
                         onChange={this.handleChange}
                         className="select-element"
                     >
-                        <option value="eCommerse">eCommerse</option>
-                        <option value="Sheduling">Scheduling</option>
+                        <option value="eCommerce">eCommerce</option>
+                        <option value="Scheduling">Scheduling</option>
                         <option value="Enterprise">Enterprise</option>
                     </select>
                 </div>
