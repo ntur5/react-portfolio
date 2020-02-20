@@ -206,7 +206,7 @@ export default class PortfolioForm extends Component {
                     />
                 </div>
                 <div className="two-column">
-                <input 
+                    <input 
                         type="text"
                         name="position"
                         placeholder="Position"
@@ -233,13 +233,10 @@ export default class PortfolioForm extends Component {
                         onChange={this.handleChange}
                     />   
                 </div>
-
                 <div className="image-uploaders three-column">
-
                     {this.state.thumb_image_url && this.state.editMode ? (
                       <div className="portfolio-manager-image-wrapper">
                         <img src={this.state.thumb_image_url} />
-
                         <div className="image-removal-link">
                           <a onClick={() => this.deleteImage("thumb_image")}>
                             <FontAwesomeIcon icon="trash" />
@@ -248,7 +245,6 @@ export default class PortfolioForm extends Component {
                         </div>
                       </div>
                     ) : (
-                    
                       <DropzoneComponent 
                           ref={this.thumbRef}
                           config={this.componentConfig()}
